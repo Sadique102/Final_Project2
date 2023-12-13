@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quest for Peaceful Kingdom</title>
+    <style>
+        body {
+            background-image: url("img/a.png");
+            background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+        }
+        #game-container {
+            margin: 0 auto;
+            width: 600px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input[type=text] {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #player-info {
+            text-align: left;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+     <div id="game-container">
+        <h1>Welcome to the Quest for Peaceful Kingdom!</h1>
+        <p>The peaceful kingdom was overcome by an evil wizard who spawned monsters everywhere.</p>
+        <p>Only the bravest and smartest hero can overcome them and bring peace, which is you.</p>
+
+        <div id="player-setup">
+            <label for="player-name">Enter your hero's name:</label>
+            <input type="text" id="player-name">
+            <button onclick="startGame()">Start Game</button>
+        </div>
+
+        <div id="game-play" style="display: none;">
+            <div id="player-info">
+                <p id="player-health">Health: 100</p>
+                <p id="player-points">Points: 0</p>
+            </div>
+            <p id="game-messages"></p>
+            <button id="roll-dice" onclick="rollDice()">Roll Dice</button>
+            <div id="dice-result"></div>
+            <div id="trivia-question"></div>
+            <button id="answer-question" onclick="answerQuestion()" style="display: none;">Answer</button>
+        </div>
+
+        <div id="game-over" style="display: none;">
+            <p id="game-over-message"></p>
+            <button onclick="restartGame()">Restart Game</button>
+        </div>
+    </div>
+
+    <script>
+
+let playerHealth = 100;
+let playerPoints = 0;
+let playerName = '';
+let currentQuestion = null;
+
+// Start the game
+function startGame() {
+    playerName = document.getElementById('player-name').value;
+    if (playerName.trim() === '') {
+        alert('Please enter a hero name to start the game.');
+        return;
+    }
+    document.getElementById('player-setup').style.display = 'none';
+    document.getElementById('game-play').style.display = 'block';
+    updateGameMessage(`Welcome, ${playerName}! To defeat the Evil Wizard, you must answer 8 questions correctly.`);
+    updatePlayerStatus();
+}
+
+// Roll Dice
+function rollDice() {
+    fetch('http://localhost:5000/roll-dice')
+    .then(response => response.json())
+    .then(data => {
+        let diceResult = data.dice_result;
+        displayDiceResult(diceResult);
+        fetchQuestions();
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Fetch Questions
+function fetchQuestions() {
+    fetch('http://localhost:5000/get-questions')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Questions fetched:', data); // Debug log
+        if (data && data.length > 0) {
+            showTriviaQuestion(data[0]); // Display the first question
+        } else {
+            updateGameMessage('No questions available.');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching questions:', error);
+        updateGameMessage(`Error fetching questions: ${error.message}`);
+    });
+}
+
+
+// Show trivia question
+function showTriviaQuestion(question) {
+    currentQuestion = question;
+    let questionText = `${question.question}\n${question.options.join('\n')}`;
+    document.getElementById('trivia-question').innerText = questionText;
+    document.getElementById('answer-question').style.display = 'block';
+}
+
+// Answer question function
+function answerQuestion() {
+    let userAnswer = prompt("Enter your answer: (A, B, C, D)").trim().toUpperCase();
+
+    if (!currentQuestion) {
+        alert("No question to answer!");
+        return;
+    }
+
+    if (userAnswer === currentQuestion.answer.toUpperCase()) {
+        updateGameMessage("Correct! You have defeated a monster.");
+        playerPoints += 1;
+    } else {
+        updateGameMessage(`Wrong answer! The monster attacks you.`);
+        playerHealth -= calculateDamage();
+    }
+
+    updatePlayerStatus();
+    checkGameStatus();
+}
+
+// Calculate damage for wrong answer
+function calculateDamage() {
+    return 20; // Fixed damage for incorrect answer
+}
+
+// Check the overall game status
+function checkGameStatus() {
+    if (playerHealth <= 0) {
+        gameOver();
+    } else if (playerPoints >= 8) { // Victory condition
+        victory();
+    }
+}
+
+// Handle game over scenario
+function gameOver() {
+    updateGameMessage("GAME OVER. The evil wizard prevails.");
+    document.getElementById('game-play').style.display = 'none';
+    document.getElementById('game-over').style.display = 'block';
+    document.getElementById('game-over-message').innerText = "You have been defeated.";
+}
+
+// Handle victory scenario
+function victory() {
+    updateGameMessage("Congratulations! You've defeated the Evil Wizard and restored peace to the kingdom!");
+    document.getElementById('game-play').style.display = 'none';
+    document.getElementById('game-over').style.display = 'block';
+    document.getElementById('game-over-message').innerText = "Victory!";
+}
+
+// Restart the game
+function restartGame() {
+    location.reload();
+}
+
+// Update game messages
+function updateGameMessage(message) {
+    document.getElementById('game-messages').innerText = message;
+}
+
+// Display dice result
+function displayDiceResult(diceResult) {
+    let diceResultElement = document.getElementById('dice-result');
+    diceResultElement.innerText = `You rolled: ${diceResult}`;
+    updateGameMessage(`Rolling... You got a ${diceResult}.`);
+}
+
+// Update player status
+function updatePlayerStatus() {
+    document.getElementById('player-health').innerText = `Health: ${playerHealth}`;
+    document.getElementById('player-points').innerText = `Points: ${playerPoints}`;
+}
+
+
+    </script>
+</body>
+</html>
