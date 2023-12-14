@@ -34,6 +34,7 @@ def get_questions():
         if 'options' in question and question['options']:
             question['options'] = question['options'].split(',')
 
+
     cursor.close()
     connection.close()
     return jsonify(questions)
