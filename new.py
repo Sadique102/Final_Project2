@@ -23,20 +23,21 @@ def get_db_connection():
 # Fetch trivia questions from the database
 @app.route('/get-questions', methods=['GET'])
 def get_questions():
-    level = request.args.get('level', default=1, type=int)
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
-    if level == 1:
-        cursor.execute("SELECT * FROM questions")
-    else:
-
-        pass
-
+    # Modified SQL query to order the results randomly
+    cursor.execute("SELECT * FROM questions ORDER BY RAND()")
     questions = cursor.fetchall()
+
+    for question in questions:
+        if 'options' in question and question['options']:
+            question['options'] = question['options'].split(',')
+
     cursor.close()
     connection.close()
     return jsonify(questions)
+
 
 # Roll dice endpoint
 @app.route('/roll-dice', methods=['GET'])
