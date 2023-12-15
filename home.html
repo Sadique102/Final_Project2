@@ -77,6 +77,9 @@
         </div>
     </div>
 
+  <audio id="gameAudio" src="img/ac.mp3" type="audio/mpeg"></audio>
+
+
     <script>
 
 let playerHealth = 100;
@@ -84,8 +87,11 @@ let playerPoints = 0;
 let playerName = '';
 let currentQuestion = null;
 
+
 // Start the game
 function startGame() {
+
+
     playerName = document.getElementById('player-name').value;
     if (playerName.trim() === '') {
         alert('Please enter a hero name to start the game.');
@@ -97,8 +103,12 @@ function startGame() {
     updatePlayerStatus();
 }
 
+
+
 // Roll Dice
 function rollDice() {
+  var gameAudio = document.getElementById('gameAudio');
+    gameAudio.play();
     fetch('http://localhost:5000/roll-dice')
     .then(response => response.json())
     .then(data => {
@@ -164,7 +174,7 @@ function answerQuestion() {
 
 // Calculate damage for wrong answer
 function calculateDamage() {
-    return 20; // Fixed damage for incorrect answer
+    return 25;
 }
 
 // Check the overall game status

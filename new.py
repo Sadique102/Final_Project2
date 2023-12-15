@@ -42,7 +42,7 @@ def get_questions():
 # Roll dice endpoint
 @app.route('/roll-dice', methods=['GET'])
 def roll_dice():
-    return jsonify({"dice_result": random.randint(1, 6)})
+    return jsonify({"dice_result": random.randint(1, 11)})
 
 if __name__ == '__main__':
     app.run(debug=True)
