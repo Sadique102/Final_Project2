@@ -78,6 +78,9 @@
     </div>
 
   <audio id="gameAudio" src="img/ac.mp3" type="audio/mpeg"></audio>
+       <audio id="gameAudi" src="img/ab.mp3" type="audio/mpeg"></audio>
+       <audio id="gameAud" src="img/f.mp3" type="audio/mpeg"></audio>
+     <audio id="gameAu" src="img/s.mp3" type="audio/mpeg"></audio>
 
 
     <script>
@@ -90,8 +93,8 @@ let currentQuestion = null;
 
 // Start the game
 function startGame() {
-
-
+  var gameAudio = document.getElementById('gameAud');
+    gameAudio.play();
     playerName = document.getElementById('player-name').value;
     if (playerName.trim() === '') {
         alert('Please enter a hero name to start the game.');
@@ -181,13 +184,15 @@ function calculateDamage() {
 function checkGameStatus() {
     if (playerHealth <= 0) {
         gameOver();
-    } else if (playerPoints >= 8) { // Victory condition
+    } else if (playerPoints >= 6) { // Victory condition
         victory();
     }
 }
 
 // Handle game over scenario
 function gameOver() {
+   var gameAudio = document.getElementById('gameAud');
+    gameAudio.play();
     updateGameMessage("GAME OVER. The evil wizard prevails.");
     document.getElementById('game-play').style.display = 'none';
     document.getElementById('game-over').style.display = 'block';
@@ -196,6 +201,8 @@ function gameOver() {
 
 // Handle victory scenario
 function victory() {
+   var gameAudio = document.getElementById('gameAudi');
+    gameAudio.play();
     updateGameMessage("Congratulations! You've defeated the Evil Wizard and restored peace to the kingdom!");
     document.getElementById('game-play').style.display = 'none';
     document.getElementById('game-over').style.display = 'block';
