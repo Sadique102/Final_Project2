@@ -102,7 +102,7 @@ function startGame() {
     }
     document.getElementById('player-setup').style.display = 'none';
     document.getElementById('game-play').style.display = 'block';
-    updateGameMessage(`Welcome, ${playerName}! To defeat the Evil Wizard, you must answer 8 questions correctly.`);
+    updateGameMessage(`Welcome, ${playerName}! To defeat the Evil Wizard, you must answer 6 questions correctly.`);
     updatePlayerStatus();
 }
 
@@ -206,7 +206,7 @@ function victory() {
     updateGameMessage("Congratulations! You've defeated the Evil Wizard and restored peace to the kingdom!");
     document.getElementById('game-play').style.display = 'none';
     document.getElementById('game-over').style.display = 'block';
-    document.getElementById('game-over-message').innerText = "Victory!";
+    document.getElementById('game-over-message').innerText = "\"Congratulations! You've defeated the Evil Wizard and restored peace to the kingdom!";
 }
 
 // Restart the game
