@@ -81,6 +81,8 @@
        <audio id="gameAudi" src="img/ab.mp3" type="audio/mpeg"></audio>
        <audio id="gameAud" src="img/f.mp3" type="audio/mpeg"></audio>
      <audio id="gameAu" src="img/s.mp3" type="audio/mpeg"></audio>
+     <audio id="gameA" src="img/sc.mp3" type="audio/mpeg"></audio>
+     <audio id="gameS" src="img/fd.mp3" type="audio/mpeg"></audio>
 
 
     <script>
@@ -166,9 +168,29 @@ function answerQuestion() {
     if (userAnswer === currentQuestion.answer.toUpperCase()) {
         updateGameMessage("Correct! You have defeated a monster.");
         playerPoints += 1;
+
+        var gameAudio = document.getElementById('gameS');
+    gameAudio.play();
+
+           document.body.style.backgroundImage = 'url("img/tb.png")';
+
+         setTimeout(function() {
+            document.body.style.backgroundImage = 'url("img/a.png")';
+        }, 1500);
+
     } else {
         updateGameMessage(`Wrong answer! The monster attacks you.`);
         playerHealth -= calculateDamage();
+
+         var gameAudio = document.getElementById('gameA');
+    gameAudio.play();
+
+         document.body.style.backgroundImage = 'url("img/tt.png")';
+
+         setTimeout(function() {
+            document.body.style.backgroundImage = 'url("img/a.png")';
+        }, 1500);
+
     }
 
     updatePlayerStatus();
