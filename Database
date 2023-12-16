@@ -1,0 +1,53 @@
+CREATE DATABASE trivia_game;
+USE trivia_game;
+CREATE TABLE questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    question TEXT NOT NULL,
+    options TEXT NOT NULL,
+    answer CHAR(1) NOT NULL,
+    attack INT NOT NULL
+);
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Goblin', 'How many elements are in the periodic table?:', 'A: 116,B: 117,C: 118,D: 119', 'C', 1);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Ork', 'Which animal lays the largest egg?:', 'A: Whale,B: Crocodile,C: Elephant,D: Ostrich', 'D', 2);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Evil Gnome', 'What is the value of 2 raised to the power of 4?:', 'A: 8,B: 4,C: 16,D: 32', 'B', 3);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Varg', 'What is the sum of the first 5 natural numbers (1 + 2 + 3 + 4 + 5):', 'A: 10,B: 15,C: 20,D: 25', 'B', 1);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Zombie', 'Which planet is known as the "Red Planet"?', 'A: Venus,B: Mars,C: Jupiter,D: Saturn', 'B', 5);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Sceleton', 'What is the chemical symbol for water?', 'A: H2O,B: CO2,C: O2,D: CH4', 'A', 4);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Ghoul', 'Which scientist is famous for the theory of general relativity?', 'A: Isaac Newton,B: Galileo Galilei,C: Albert Einstein,D: Stephen Hawking', 'C', 18);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Gnoll', 'In the periodic table, which element has the symbol 'Fe'?', 'A: Iron,B: Fluorine,C: Francium,D: Fermium', 'A', 4);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Kobold', 'Which gas do plants primarily absorb during photosynthesis?', 'A: Oxygen,B: Nitrogen,C: Carbon dioxide,D: Hydrogen', 'C', 2);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Mimic', 'What is the chemical symbol for gold?
+', 'A: Gd,B: Au,C: Ag,D: Pt', 'B', 10);
+
+CREATE USER IF NOT EXISTS 'USERNAME'@'localhost' IDENTIFIED BY 'PASSWORD';
+GRANT ALL PRIVILEGES ON `DATABASENAME`.* TO 'USERNAME'@'localhost';
+CREATE USER IF NOT EXISTS 'touhid'@'localhost' IDENTIFIED BY 'MyN3wP4ssw0rd';
+GRANT ALL PRIVILEGES ON trivia_game.* TO 'touhid'@'localhost';
+        
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Gremlin', 'If you multiply a number by 0, what is the result?:', 'A: 0,B: 1,C: Number remains the same,D: depends on the number', 'A', 1);
+
+INSERT INTO questions (name, question, options, answer, attack)
+VALUES ('Pixie', 'Solve for x: 2x + 5 = 11:', 'A: x=3,B: x=4,C: x=6,D: x=8', 'A', 1);
+select * from questions;
